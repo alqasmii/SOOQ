@@ -29,4 +29,15 @@ pool
 
 app.get("/", (req, res) => res.send("Sooq App Backend Running"));
 
+const authRoutes = require("./routes/auth");
+app.use("/api/auth", authRoutes);
+
+const storeRoutes = require("./routes/store");
+const productRoutes = require("./routes/product");
+
+app.use("/api/stores", storeRoutes);
+app.use("/api/products", productRoutes);
+
+
 app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+
