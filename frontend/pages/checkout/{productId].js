@@ -12,26 +12,33 @@ export default function Checkout() {
 
   useEffect(() => {
     if (productId) {
-      axios.get(`http://localhost:8080/api/products/${productId}`).then((res) => setProduct(res.data));
+      axios.get(`http://localhost:8080/api/products/${productId}`)
+        .then((res) => setProduct(res.data))
+        .catch((err) => console.error("Error fetching product:", err));
     }
   }, [productId]);
 
   const handleOrder = async () => {
-    const order = {
-      customerName,
-      storeId: product.storeId,
-      products: [product.id],
-      total: product.price,
-      paymentMethod: "Cash",
-      phoneNumber,
-    };
+    try {
+      const order = {
+        customerName,
+        storeId: product.storeId,
+        products: [product.id],
+        total: product.price,
+        paymentMethod: "Cash",
+        phoneNumber,
+      };
 
-    await axios.post("http://localhost:8080/api/orders", order);
-    alert("Order placed! Store will contact you.");
-    router.push(`/store/${product.storeId}`);
+      await axios.post("http://localhost:8080/api/orders", order);
+      alert("Order placed! The store will contact you.");
+      router.push(`/store/${product.storeId}`);
+    } catch (err) {
+      console.error("Order creation failed:", err);
+      alert("Order failed! Please try again.");
+    }
   };
 
-  if (!product) return <p>Loading...</p>;
+  if (!product) return <p>Loading product...</p>;
 
   return (
     <div className="p-6 max-w-lg mx-auto">
