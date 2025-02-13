@@ -38,6 +38,12 @@ const productRoutes = require("./routes/product");
 app.use("/api/stores", storeRoutes);
 app.use("/api/products", productRoutes);
 
+const orderRoutes = require("./routes/order");
+const paymentRoutes = require("./routes/payment");
+
+app.use("/api/orders", orderRoutes);
+app.use("/api/payments", paymentRoutes);
+
 
 app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
 
