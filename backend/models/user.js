@@ -1,5 +1,10 @@
-module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define("User", {
+const { DataTypes, Model } = require("sequelize");
+const sequelize = require("../config/database");
+
+class User extends Model {}
+
+User.init(
+  {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -8,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-      validate: { isEmail: true }
     },
     password: {
       type: DataTypes.STRING,
@@ -16,9 +20,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     role: {
       type: DataTypes.STRING,
-      defaultValue: "business_owner",
+      defaultValue: "user",
     },
-  });
+  },
+  {
+    sequelize,
+    modelName: "User",
+  }
+);
 
-  return User;
-};
+module.exports = User;

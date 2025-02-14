@@ -7,7 +7,7 @@ const { User } = require("../models"); // Import User model
 
 const router = express.Router();
 
-// 📌 1. User Registration
+// 📌 1. User Registration (Sign Up)
 router.post(
   "/register",
   [
@@ -34,9 +34,9 @@ router.post(
       user = await User.create({ name, email, password: hashedPassword });
 
       // Generate JWT token
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+      const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-      res.json({ token });
+      res.status(201).json({ token, user: { id: user.id, name: user.name, email: user.email } });
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server error");
@@ -44,7 +44,7 @@ router.post(
   }
 );
 
-// 📌 2. User Login
+// 📌 2. User Login (Sign In)
 router.post(
   "/login",
   [
@@ -67,9 +67,9 @@ router.post(
       if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
 
       // Generate JWT token
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+      const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-      res.json({ token });
+      res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server error");
