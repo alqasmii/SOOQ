@@ -65,5 +65,17 @@ router.delete("/:id", auth, async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+// 📌 5. Get a Single Product by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const product = await Product.findByPk(req.params.id);
+    if (!product) return res.status(404).json({ msg: "Product not found" });
+
+    res.json(product);
+  } catch (err) {
+    console.error("Error fetching product:", err);
+    res.status(500).send("Server error");
+  }
+});
 
 module.exports = router;

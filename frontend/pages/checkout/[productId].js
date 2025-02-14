@@ -38,7 +38,7 @@ export default function Checkout() {
     }
   };
 
-  if (!product) return <p>Loading product...</p>;
+  if (!product) return <p className="text-center text-gray-500">Loading product...</p>;
 
   return (
     <div className="p-6 max-w-lg mx-auto">
@@ -64,7 +64,7 @@ export default function Checkout() {
         />
       </div>
 
-      <Button onClick={handleOrder} className="w-full mt-4">
+      <Button onClick={handleOrder} className="w-full mt-4 bg-blue-500 text-white">
         Place Order
       </Button>
     </div>
