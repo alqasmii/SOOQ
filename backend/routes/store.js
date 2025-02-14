@@ -34,5 +34,16 @@ router.get("/:id", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+// 📌 Get store by user ID
+router.get("/user/:userId", async (req, res) => {
+  try {
+    const store = await Store.findOne({ where: { ownerId: req.params.userId } });
+    if (!store) return res.status(404).json({ msg: "No store found for this user" });
+    res.json(store);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+});
 
 module.exports = router;
