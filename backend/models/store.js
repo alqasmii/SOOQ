@@ -1,5 +1,14 @@
-module.exports = (sequelize, DataTypes) => {
-  const Store = sequelize.define("Store", {
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
+
+class Store extends Model {
+  static associate(models) {
+    Store.belongsTo(models.User, { foreignKey: "ownerId", as: "owner" });
+  }
+}
+
+Store.init(
+  {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -7,17 +16,16 @@ module.exports = (sequelize, DataTypes) => {
     ownerId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { model: "Users", key: "id" }
+      references: {
+        model: "Users",
+        key: "id",
+      },
     },
-    customURL: {
-      type: DataTypes.STRING,
-      unique: true,
-    },
-  });
+  },
+  {
+    sequelize,
+    modelName: "Store",
+  }
+);
 
-  Store.associate = (models) => {
-    Store.belongsTo(models.User, { foreignKey: "ownerId" });
-  };
-
-  return Store;
-};
+module.exports = Store;

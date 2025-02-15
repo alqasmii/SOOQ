@@ -9,15 +9,14 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!loading && !user) {
-      return <p className="text-center">Redirecting to login...</p>;
-    }
-     else if (user) {
+      window.location.href = "/auth/login"; // ✅ Redirect without returning JSX
+    } else if (user) {
       axios.get(`http://localhost:8080/api/stores/user/${user.id}`)
         .then((res) => setStore(res.data))
         .catch((err) => console.error("Error fetching store:", err));
     }
   }, [user, loading]);
-
+  
   if (loading) return <p className="text-center">Loading...</p>;
 
   return (

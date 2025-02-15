@@ -1,7 +1,11 @@
-const { DataTypes, Model } = require("sequelize");
+const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-class User extends Model {}
+class User extends Model {
+  static associate(models) {
+    User.hasOne(models.Store, { foreignKey: "ownerId", as: "store" });
+  }
+}
 
 User.init(
   {
@@ -13,14 +17,13 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      validate: {
+        isEmail: true,
+      },
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    role: {
-      type: DataTypes.STRING,
-      defaultValue: "user",
     },
   },
   {
