@@ -26,6 +26,7 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
 // ✅ 2. Get Store by User ID
 router.get("/user/:userId", async (req, res) => {
   try {
@@ -35,6 +36,17 @@ router.get("/user/:userId", async (req, res) => {
     res.json(store);
   } catch (err) {
     console.error("Server error:", err);
+=======
+// 📌 2. Get Store Details
+router.get("/:id", async (req, res) => {
+  try {
+    const store = await Store.findByPk(req.params.id, { include: User });
+    if (!store) return res.status(404).json({ msg: "Store not found" });
+
+    res.json(store);
+  } catch (err) {
+    console.error(err);
+>>>>>>> parent of 37abadc (v0.4)
     res.status(500).send("Server error");
   }
 });
