@@ -1,6 +1,5 @@
 import { useState, useContext } from "react";
-import AuthContext from "@/context/AuthContext";
-import { Button } from "@/components/ui/button";
+import AuthContext from "../../context/AuthContext";
 
 export default function Register() {
   const { register } = useContext(AuthContext);
@@ -38,9 +37,9 @@ export default function Register() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button type="submit" className="w-full mt-4 bg-blue-500 text-white">
+        <button type="submit" className="w-full bg-green-500 text-white py-2 mt-4 rounded-md">
           Register
-        </Button>
+        </button>
       </form>
     </div>
   );

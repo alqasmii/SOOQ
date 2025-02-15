@@ -11,6 +11,7 @@ const db = {};
 fs.readdirSync(__dirname)
   .filter((file) => file !== "index.js" && file.endsWith(".js"))
   .forEach((file) => {
+    // Supports both CommonJS and ES6 exports
     const modelFile = require(path.join(__dirname, file));
     const model = modelFile.default ? modelFile.default : modelFile;
     if (typeof model.init === "function") {
@@ -19,7 +20,7 @@ fs.readdirSync(__dirname)
     }
   });
 
-// Associate models if needed
+// Run associations if they exist
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);

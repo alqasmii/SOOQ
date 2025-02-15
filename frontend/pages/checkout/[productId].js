@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../components/ui/button";
 
 export default function Checkout() {
   const router = useRouter();
@@ -12,7 +12,8 @@ export default function Checkout() {
 
   useEffect(() => {
     if (productId) {
-      axios.get(`http://localhost:8080/api/products/${productId}`)
+      axios
+        .get(`http://localhost:8080/api/products/${productId}`)
         .then((res) => setProduct(res.data))
         .catch((err) => console.error("Error fetching product:", err));
     }
@@ -26,14 +27,13 @@ export default function Checkout() {
         products: [product.id],
         total: product.price,
         paymentMethod: "Cash",
-        phoneNumber,
+        phoneNumber
       };
-
       await axios.post("http://localhost:8080/api/orders", order);
       alert("Order placed! The store will contact you.");
       router.push(`/store/${product.storeId}`);
     } catch (err) {
-      console.error("Order creation failed:", err);
+      console.error("Order creation failed:", err.response?.data || err);
       alert("Order failed! Please try again.");
     }
   };
@@ -44,7 +44,6 @@ export default function Checkout() {
     <div className="p-6 max-w-lg mx-auto">
       <h1 className="text-2xl font-bold">Checkout</h1>
       <p className="text-gray-600">Order {product.name}</p>
-
       <div className="mt-4">
         <input
           className="border p-2 w-full rounded-md"
@@ -63,7 +62,6 @@ export default function Checkout() {
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
       </div>
-
       <Button onClick={handleOrder} className="w-full mt-4 bg-blue-500 text-white">
         Place Order
       </Button>

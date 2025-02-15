@@ -2,30 +2,26 @@ const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
 class Store extends Model {
+  static init(sequelize, DataTypes) {
+    return super.init(
+      {
+        name: { type: DataTypes.STRING, allowNull: false },
+        ownerId: { type: DataTypes.INTEGER, allowNull: false },
+        customURL: { type: DataTypes.STRING, unique: true }
+      },
+      {
+        sequelize,
+        modelName: "Store",
+        tableName: "Stores"
+      }
+    );
+  }
+
   static associate(models) {
-    Store.belongsTo(models.User, { foreignKey: "ownerId", as: "owner" });
+    if (models.User) {
+      this.belongsTo(models.User, { foreignKey: "ownerId", as: "owner" });
+    }
   }
 }
-
-Store.init(
-  {
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    ownerId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "Users",
-        key: "id",
-      },
-    },
-  },
-  {
-    sequelize,
-    modelName: "Store",
-  }
-);
 
 module.exports = Store;
