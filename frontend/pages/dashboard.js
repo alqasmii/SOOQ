@@ -1,62 +1,55 @@
-import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Sun, Moon, Store, ShoppingCart, BarChart3 } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
+import AuthContext from "../context/AuthContext";
+import axios from "axios";
+import Link from "next/link";
 
 export default function Dashboard() {
-<<<<<<< HEAD
   const { user, logout, loading } = useContext(AuthContext);
   const [store, setStore] = useState(null);
 
   useEffect(() => {
     if (!loading && !user) {
-      window.location.href = "/auth/login"; // ✅ Redirect without returning JSX
+      window.location.href = "/auth/login";
     } else if (user) {
-      axios.get(`http://localhost:8080/api/stores/user/${user.id}`)
+      axios
+        .get(`http://localhost:8080/api/stores/user/${user.id}`)
         .then((res) => setStore(res.data))
-        .catch((err) => console.error("Error fetching store:", err));
+        .catch((err) =>
+          console.error("Error fetching store:", err.response?.data || err.message)
+        );
     }
   }, [user, loading]);
-  
+
   if (loading) return <p className="text-center">Loading...</p>;
-=======
-  const [darkMode, setDarkMode] = useState(false);
->>>>>>> parent of 37abadc (v0.4)
 
   return (
-    <div className={darkMode ? "bg-gray-900 text-white min-h-screen p-6" : "bg-gray-100 text-black min-h-screen p-6"}>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Sooq App Dashboard</h1>
-        <Button onClick={() => setDarkMode(!darkMode)}>
-          {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-        </Button>
+    <div className="max-w-4xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
+
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <h2 className="text-2xl font-semibold">Welcome, {user?.name}!</h2>
+        <p className="text-gray-600">{user?.email}</p>
+        <button onClick={logout} className="mt-4 bg-red-500 text-white px-4 py-2 rounded">
+          Logout
+        </button>
       </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="p-4 flex items-center space-x-4">
-          <Store className="w-10 h-10 text-blue-500" />
-          <CardContent>
-            <h2 className="text-lg font-semibold">Manage Store</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Customize your store settings and branding.</p>
-          </CardContent>
-        </Card>
-        
-        <Card className="p-4 flex items-center space-x-4">
-          <ShoppingCart className="w-10 h-10 text-green-500" />
-          <CardContent>
-            <h2 className="text-lg font-semibold">Orders</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Track and manage customer orders easily.</p>
-          </CardContent>
-        </Card>
-        
-        <Card className="p-4 flex items-center space-x-4">
-          <BarChart3 className="w-10 h-10 text-yellow-500" />
-          <CardContent>
-            <h2 className="text-lg font-semibold">Analytics</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">View insights on sales and customer behavior.</p>
-          </CardContent>
-        </Card>
-      </div>
+
+      {store ? (
+        <div className="mt-6">
+          <h2 className="text-2xl font-semibold">Your Store</h2>
+          <p className="text-lg">{store.name}</p>
+          <Link href={`/store/${store.id}`}>
+            <a className="text-blue-500">View Store</a>
+          </Link>
+        </div>
+      ) : (
+        <div className="mt-6">
+          <p>You don’t have a store yet.</p>
+          <Link href="/dashboard/create-store">
+            <a className="bg-green-500 text-white px-4 py-2 rounded">Create Store</a>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import Image from "next/image";
 import { ShoppingCart, PhoneCall } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "../../components/ui/button";
+import { Card, CardContent } from "../../components/ui/card";
 
 export default function Storefront() {
   const router = useRouter();
@@ -15,14 +15,14 @@ export default function Storefront() {
 
   useEffect(() => {
     if (storeId) {
-      axios.get(`http://localhost:8080/api/stores/${storeId}`)
+      axios
+        .get(`http://localhost:8080/api/stores/${storeId}`)
         .then((res) => setStore(res.data))
         .catch((err) => console.error("Error fetching store:", err));
-
-      axios.get(`http://localhost:8080/api/products/store/${storeId}`)
+      axios
+        .get(`http://localhost:8080/api/products/store/${storeId}`)
         .then((res) => setProducts(res.data))
         .catch((err) => console.error("Error fetching products:", err));
-
       setLoading(false);
     }
   }, [storeId]);
@@ -34,7 +34,6 @@ export default function Storefront() {
     <div className="p-6 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold">{store.name}</h1>
       <p className="text-gray-600">Welcome to {store.name}! Browse our products below.</p>
-
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
         {products.length === 0 ? (
           <p className="text-center text-gray-500">No products available.</p>

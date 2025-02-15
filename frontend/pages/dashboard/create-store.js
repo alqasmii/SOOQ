@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
-import AuthContext from "../../context/AuthContext"; // ✅ Ensure correct import
+import AuthContext from "../../context/AuthContext";
 import axios from "axios";
 import { useRouter } from "next/router";
 
 export default function CreateStore() {
-  const { authToken } = useContext(AuthContext); // 🔥 Removed "user"
+  const { authToken } = useContext(AuthContext);
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -17,11 +17,10 @@ export default function CreateStore() {
         "http://localhost:8080/api/stores",
         { name },
         {
-          headers: { Authorization: `Bearer ${authToken}` }, // ✅ Use token
+          headers: { Authorization: `Bearer ${authToken}` }
         }
       );
-
-      router.push("/dashboard"); // ✅ Redirect after store creation
+      router.push("/dashboard");
     } catch (err) {
       console.error("Error creating store:", err.response?.data || err);
       alert(err.response?.data?.msg || "Failed to create store.");

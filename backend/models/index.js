@@ -7,25 +7,29 @@ const sequelize = require("../config/database");
 
 const db = {};
 
-// Read all model files (except index.js)
+// Load models dynamically
 fs.readdirSync(__dirname)
   .filter((file) => file !== "index.js" && file.endsWith(".js"))
   .forEach((file) => {
-    // Supports both CommonJS and ES6 exports
-    const modelFile = require(path.join(__dirname, file));
-    const model = modelFile.default ? modelFile.default : modelFile;
-    if (typeof model.init === "function") {
+    console.log(`Loading model: ${file}`); // Debug log
+
+    const model = require(path.join(__dirname, file));
+    
+    if (model.init) {
       model.init(sequelize, Sequelize.DataTypes);
       db[model.name] = model;
     }
   });
 
-// Run associations if they exist
+// Associate models if needed
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
 });
+
+// Debugging logs
+console.log("✅ Loaded Models:", Object.keys(db));
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

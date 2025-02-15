@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
-import AuthContext from "@/context/AuthContext";
-import { Button } from "@/components/ui/button";
+import AuthContext from "../context/AuthContext";
+import { Button } from "../components/ui/button"; // Updated path
 
 export default function Login() {
   const { login } = useContext(AuthContext);

@@ -7,8 +7,8 @@ export default function Navbar() {
 
   return (
     <nav className="p-4 bg-gray-800 text-white flex justify-between items-center">
-      <Link href="/">
-        <a className="text-xl font-bold">Sooq App</a>
+      <Link href="/" className="text-xl font-bold">
+        Sooq App
       </Link>
       <div>
         {user ? (
@@ -17,11 +17,11 @@ export default function Navbar() {
           </button>
         ) : (
           <div className="flex gap-4">
-            <Link href="/auth/login">
-              <a className="bg-blue-500 px-4 py-2 rounded-md">Login</a>
+            <Link href="/auth/login" className="bg-blue-500 px-4 py-2 rounded-md">
+              Login
             </Link>
-            <Link href="/auth/register">
-              <a className="bg-green-500 px-4 py-2 rounded-md">Register</a>
+            <Link href="/auth/register" className="bg-green-500 px-4 py-2 rounded-md">
+              Register
             </Link>
           </div>
         )}
